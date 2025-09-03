@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Are We There Yet ??</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="startOverlay">
+    <div class="overlay-content">
+      <h1 class="title">⚔️ Are We There Yet ??</h1>
+      <button id="startBtn" class="big-btn">▶ Start Game</button>
+      <div class="howto">
+        <h2>How to Play</h2>
+        <p>You’ll be shown a city or county. Click on the map where you think it is!</p>
+        <p>The closer you are, the more points you score. A perfect guess is worth 5,000.</p>
+        <p>Ten rounds per game. Each correct answer leaves a town marker on the map.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="frame">
+    <aside class="panel">
+      <h1>⚔️ Are We There Yet ??</h1>
+      <div id="filter">
+        <label><input type="checkbox" value="City" checked> City</label>
+        <label><input type="checkbox" value="Town" checked> Town</label>
+        <label><input type="checkbox" value="County" checked> County</label>
+      </div>
+
+      <div class="stat banner">Round: <span id="roundNum">1</span>/10</div>
+      <div class="stat">Target: <strong id="targetName">—</strong> <span id="targetType" style="opacity:.7"></span></div>
+      <div class="stat">Last guess: <span id="lastDistance">—</span> · <span id="lastScore">—</span></div>
+      <div class="stat">Total score: <strong id="totalScore">0</strong></div>
+      <div class="controls">
+        <button class="btn" id="restartBtn">↻ New Game</button>
+        <button class="btn small" id="toggleFogBtn">☁️ Toggle Fog</button>
+        <button class="btn small" id="toggleDoodlesBtn">🧜 Toggle Doodles</button>
+      </div>
+      <div class="legend">
+        <p><span class="dot" style="background:#111"></span> Your guess &nbsp; <span class="dot" style="background:#0a7"></span> Correct location &nbsp; </p>
+        <p>Points scale with accuracy. A perfect guess is worth 5,000.</p>
+        <p>Game is UK-only; cities and counties are mixed in.</p>
+      </div>
+      <div class="footer">Tip: aim for the right coastline and latitude. Zoom in for detail. Ten goes per round.</div>
+    </aside>
+
+    <main class="mapwrap">
+      
+      <div class="toast" id="toast"></div>
+
+      <!-- Map container -->
+      <svg id="map" viewBox="0 0 1000 1200" xmlns="http://www.w3.org/2000/svg">
+        <image href="map.png" x="0" y="0" width="1536" height="2304" />
+        
+
+        <!-- Layers -->
+        <g id="townsLayer"></g>
+        <g id="pathsLayer"></g>
+        <g id="markersLayer"></g>
+        <g id="people"></g>
+        <g id="cloudsLayer"></g>
+        <!-- Rail path following your specific coordinates -->
+        <path id="rail" 
+            d="M835.3 316.4 
+                L740.8 368.1 
+                L685.5 457.3 
+                L699.8 582.2 
+                L819.3 616.1 
+                L906.7 550.1" 
+            fill="none" stroke="#222" stroke-dasharray="4 6"/>
+
+        <!-- Train definition and animation -->
+        <defs>
+        <g id="train">
+            <rect x="-15" y="-10" width="30" height="20" fill="#333"/>
+            <circle cx="-10" cy="10" r="5" fill="#555"/>
+            <circle cx="10" cy="10" r="5" fill="#555"/>
+        </g>
+        </defs>
+
+        <use href="#train">
+        <animateMotion dur="30s" repeatCount="indefinite" rotate="auto">
+            <mpath href="#rail"/>
+        </animateMotion>
+        </use>
+
+        <path id="rail1" 
+            
+            d="M190.5 1557.6 
+                L427.8 1389.9 
+                L452.7 1081.4 
+                L165.6 1195.5" 
+            fill="none" stroke="#222" stroke-dasharray="4 6"/>
+
+        <!-- Train definition and animation -->
+        <defs>
+        <g id="train1">
+            <rect x="-15" y="-10" width="30" height="20" fill="#333"/>
+            <circle cx="-10" cy="10" r="5" fill="#555"/>
+            <circle cx="10" cy="10" r="5" fill="#555"/>
+        </g>
+        </defs>
+
+        <use href="#train1">
+        <animateMotion dur="30s" repeatCount="indefinite" rotate="auto">
+            <mpath href="#rail1"/>
+        </animateMotion>
+        </use>
+
+        <path id="rail2" 
+      d="M619.6 1876.7
+         L778.4 1775.0
+         L956.7 1746.5
+         L1106.5 1609.2
+         L1163.6 1439.7
+         L1133.3 1268.5" 
+      fill="none" stroke="#222" stroke-dasharray="4 6"/>
+
+
+        <!-- Train definition and animation -->
+        <defs>
+        <g id="train2">
+            <rect x="-15" y="-10" width="30" height="20" fill="#333"/>
+            <circle cx="-10" cy="10" r="5" fill="#555"/>
+            <circle cx="10" cy="10" r="5" fill="#555"/>
+        </g>
+        </defs>
+
+        <use href="#train2">
+        <animateMotion dur="30s" repeatCount="indefinite" rotate="auto">
+            <mpath href="#rail2"/>
+        </animateMotion>
+        </use>
+
+        <path id="rail3" 
+      d="M989.2,899.5 
+         L901.8,1017.2 
+         L878.6,1106.4 
+         L925.0,1195.6 
+         L910.7,1274.0 
+         L862.6,1395.3 
+         L782.3,1416.7" 
+      fill="none" stroke="#222" stroke-dasharray="4 6"/>
+
+
+
+        <!-- Train definition and animation -->
+        <defs>
+        <g id="train3">
+            <rect x="-15" y="-10" width="30" height="20" fill="#333"/>
+            <circle cx="-10" cy="10" r="5" fill="#555"/>
+            <circle cx="10" cy="10" r="5" fill="#555"/>
+        </g>
+        </defs>
+
+        <use href="#train3">
+        <animateMotion dur="30s" repeatCount="indefinite" rotate="auto">
+            <mpath href="#rail3"/>
+        </animateMotion>
+        </use>
+
+        
+
+
+
+      </svg>
+
+      <div class="fog f1" id="fog1"></div>
+      <div class="fog f2" id="fog2"></div>
+      <div class="fog f3" id="fog3"></div>
+
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
